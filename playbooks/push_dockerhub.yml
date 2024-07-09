@@ -1,13 +1,10 @@
 ---
 - name: Login to Docker Hub and push image
-  ansible.builtin.shell:
-    cmd: |
-      echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-      docker push SanjayGuduru/project-1:v1.52
-      docker push SanjayGuduru/project-1:latest
+  hosts: localhost  # or specify your target hosts here if needed
+
   environment:
-    DOCKER_USERNAME: gudurusanjay
-    DOCKER_PASSWORD: Sanjay@1927
+    DOCKER_USERNAME: "{{ gudurusanjay }}"
+    DOCKER_PASSWORD: "{{ Sanjay@1927 }}"
 
   tasks:
     - name: TAG IMAGE WITH BUILD ID & LATEST
@@ -18,13 +15,14 @@
         docker tag {{ JOB_NAME }}:v1.{{ BUILD_ID }} SanjayGuduru/{{ JOB_NAME }}:latest
 
     - name: LOGIN DOCKERHUB & PUSH IMAGE ON REGISTRY
-      shell: |        
-        docker login -u {{ dockerhub_user }} -p {{ dockerhub_pass }}
+      shell: |
+        docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
         docker push SanjayGuduru/{{ JOB_NAME }}:v1.{{ BUILD_ID }}
         docker push SanjayGuduru/{{ JOB_NAME }}:latest
 
     - name: REMOVE OLD IMAGES FROM SERVER
-      shell: docker rmi -f $(docker images 'gudurusanjay/{{ JOB_NAME }}' -a -q) &> /dev/null
+      shell: docker rmi -f $(docker images 'SanjayGuduru/{{ JOB_NAME }}' -a -q) &> /dev/null
 
     - name: LOGOUT DOCKERHUB
       shell: docker logout
+
