@@ -26,13 +26,13 @@
       command: >
         bash -c "cd /opt/docker &&
         docker build -t {{ project }}:v1.36 . &&
-        docker tag {{ project }}:v1.36 mahesh8887/{{ project }}:v1.36 &&
-        docker tag {{ project }}:v1.36 mahesh8887/{{ project }}:latest"
+        docker tag {{ project }}:v1.36 SanjayGuduru/{{ project }}:v1.36 &&
+        docker tag {{ project }}:v1.36 SanjayGuduru/{{ project }}:latest"
 
     - name: LOGIN TO DOCKERHUB
       command: echo "{{ docker_password }}" | docker login -u "{{ docker_username }}" --password-stdin
 
     - name: PUSH IMAGE TO DOCKERHUB
       command: >
-        docker push mahesh8887/{{ project }}:v1.36 &&
-        docker push mahesh8887/{{ project }}:latest
+        docker push SanjayGuduru/{{ project }}:v1.36 &&
+        docker push SanjayGuduru/{{ project }}:latest
