@@ -1,11 +1,14 @@
 ---
-- name: IMAGE PUSH
-  hosts: all
-  remote_user: root
-  vars:
-    project: "project-1"
-    docker_username: "gudurusanjay"
-    docker_password: "Sanjay@1927"
+- name: Login to Docker Hub and push image
+  ansible.builtin.shell:
+    cmd: |
+      echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+      docker push SanjayGuduru/project-1:v1.52
+      docker push SanjayGuduru/project-1:latest
+  environment:
+    DOCKER_USERNAME: gudurusanjay
+    DOCKER_PASSWORD: Sanjay@1927
+
   tasks:
     - name: TAG IMAGE WITH BUILD ID & LATEST
       shell: |
