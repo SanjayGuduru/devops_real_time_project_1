@@ -1,36 +1,23 @@
-
-- name: Tag Docker Image
+---
+- name: IMAGE PUSH
   hosts: all
-  become: yes
+  remote_user: root
   tasks:
-    - name: CREATE DOCKER DIRECTORY
-      file:
-        path: /opt/docker
-        state: directory
-        mode: '0755'
-
-    - name: COPY FILES TO DOCKER DIRECTORY
-      copy:
-        src: /local/path/to/your/docker/files/
-        dest: /opt/docker/
-        owner: root
-        group: root
-        mode: '0755'
-
     - name: TAG IMAGE WITH BUILD ID & LATEST
-      command: >
-        bash -c "cd /opt/docker &&
-        docker build -t project-1:v1.36 . &&
-        docker tag project-1:v1.36 SanjayGuduru/project-1:v1.36 &&
-        docker tag project-1:v1.36 SanjayGuduru/project-1:latest"
+      shell: |
+        cd /opt/docker
+        docker build -t {{ JOB_NAME }}:v1.{{ BUILD_ID }} .
+        docker tag {{ JOB_NAME }}:v1.{{ BUILD_ID }} gudurusanjay/{{ JOB_NAME }}:v1.{{ BUILD_ID }}
+        docker tag {{ JOB_NAME }}:v1.{{ BUILD_ID }} gudurusanjay/{{ JOB_NAME }}:latest
 
-    - name: LOGIN TO DOCKERHUB
-      command: echo "{{ gudurusanjay }}" | docker login -u "{{ gudurusanjay }}" --password-stdin
-      vars:
-        docker_username: "gudurusanjay"
-        docker_password: "Sanjay@1927"
+    - name: LOGIN DOCKERHUB & PUSH IMAGE ON REGISTRY
+      shell: |        
+        docker login -u {{ gudurusanjay }} -p {{ Sanjay@1927 }}
+        docker push gudurusanjay/{{ JOB_NAME }}:v1.{{ BUILD_ID }}
+        docker push gudurusanjay/{{ JOB_NAME }}:latest
 
-    - name: PUSH IMAGE TO DOCKERHUB
-      command: >
-        docker push gudurusanjay/project-1:v1.36 &&
-        docker push gudurusanjay/project-1:latest
+    - name: REMOVE OLD IMAGES FROM SERVER
+      shell: docker rmi -f $(docker images 'gudurusanjay/{{ JOB_NAME }}' -a -q) &> /dev/null
+
+    - name: LOGOUT DOCKERHUB
+      shell: docker logout
