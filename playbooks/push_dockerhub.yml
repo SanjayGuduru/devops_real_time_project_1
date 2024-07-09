@@ -32,5 +32,5 @@
 
     - name: PUSH IMAGE TO DOCKERHUB
       command: >
-        docker push SanjayGuduru/project-1:v1.36 &&
-        docker push SanjayGuduru/project-1:latest
+        docker push gudurusanjay/project-1:v1.36 &&
+        docker push gudurusanjay/project-1:latest
