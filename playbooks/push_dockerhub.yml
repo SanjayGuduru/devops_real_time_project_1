@@ -5,10 +5,7 @@
   vars:
     project: "project-1"
     docker_username: "gudurusanjay"
-    docker_password: "Sanjay@1927" |
-      $ANSIBLE_VAULT;1.1;AES256
-      1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef
-      1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef
+    docker_password: "Sanjay@1927"
 
   tasks:
     - name: CREATE DOCKER DIRECTORY
@@ -29,13 +26,13 @@
       command: >
         bash -c "cd /opt/docker &&
         docker build -t {{ project }}:v1.36 . &&
-        docker tag {{ project }}:v1.36 gudurusanjay/{{ project }}:v1.36 &&
-        docker tag {{ project }}:v1.36 gudurusanjay/{{ project }}:latest"
+        docker tag {{ project }}:v1.36 mahesh8887/{{ project }}:v1.36 &&
+        docker tag {{ project }}:v1.36 mahesh8887/{{ project }}:latest"
 
     - name: LOGIN TO DOCKERHUB
       command: echo "{{ docker_password }}" | docker login -u "{{ docker_username }}" --password-stdin
 
     - name: PUSH IMAGE TO DOCKERHUB
       command: >
-        docker push gudurusanjay/{{ project }}:v1.36 &&
-        docker push gudurusanjay/{{ project }}:latest
+        docker push mahesh8887/{{ project }}:v1.36 &&
+        docker push mahesh8887/{{ project }}:latest
