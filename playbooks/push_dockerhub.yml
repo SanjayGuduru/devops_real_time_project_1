@@ -1,10 +1,11 @@
 ---
-- name: Login to Docker Hub and push image
-  hosts: all  # or specify your target hosts here if needed
-
-  environment:
-    DOCKER_USERNAME: "{{ gudurusanjay }}"
-    DOCKER_PASSWORD: "{{ Sanjay@1927 }}"
+- name: IMAGE PUSH
+  hosts: all
+  remote_user: root
+  vars:
+    project: "project-1"
+    docker_username: "gudurusanjay"
+    docker_password: "Sanjay@1927"
 
   tasks:
     - name: TAG IMAGE WITH BUILD ID & LATEST
