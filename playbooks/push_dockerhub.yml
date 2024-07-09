@@ -5,7 +5,7 @@
   vars:
     project: "project-1"
     docker_username: "gudurusanjay"
-    docker_password: !vault |
+    docker_password: "Sanjay@1927" |
       $ANSIBLE_VAULT;1.1;AES256
       1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef
       1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef
